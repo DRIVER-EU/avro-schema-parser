@@ -30,7 +30,7 @@ var CommandLineInterface = (function () {
     CommandLineInterface.sections = [
         {
             header: npmPackage.name + ", v" + npmPackage.version,
-            content: npmPackage.license + " license.\n\n    " + npmPackage.description + "\n\n    The Kafka schema registry associates a schema ID with a topic. Therefore,\n    the uploaded schema should not contain multiple definitions. On the other hand,\n    creating a schema with all sub-schema's inline is also not very practical, e.g.\n    you may have to add a schema twice if it can be a single or array element. This\n    small tool simplifies the process by inlining all referenced schema's.\n\n    Input is an existing schema that references other schema's.\n    Output is a new schema, where all references are inlined."
+            content: npmPackage.license + " license.\n\n    " + npmPackage.description + "\n\n    The Kafka schema registry associates a schema ID with a topic. Therefore,\n    the uploaded schema should not contain multiple definitions. On the other\n    hand, creating a schema with all sub-schema's inline is also not very\n    practical, e.g. you may have to add a schema twice if it can be a single\n    or array element. This small tool simplifies the process by inlining all\n    referenced schema's.\n\n    Input is an existing schema that references other schema's.\n    Output is a new schema, where all references are inlined."
         },
         {
             header: 'Options',

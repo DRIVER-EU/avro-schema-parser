@@ -40,10 +40,11 @@ export class CommandLineInterface {
     ${npmPackage.description}
 
     The Kafka schema registry associates a schema ID with a topic. Therefore,
-    the uploaded schema should not contain multiple definitions. On the other hand,
-    creating a schema with all sub-schema's inline is also not very practical, e.g.
-    you may have to add a schema twice if it can be a single or array element. This
-    small tool simplifies the process by inlining all referenced schema's.
+    the uploaded schema should not contain multiple definitions. On the other
+    hand, creating a schema with all sub-schema's inline is also not very
+    practical, e.g. you may have to add a schema twice if it can be a single
+    or array element. This small tool simplifies the process by inlining all
+    referenced schema's.
 
     Input is an existing schema that references other schema's.
     Output is a new schema, where all references are inlined.`
