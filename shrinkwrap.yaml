@@ -1,0 +1,126 @@
+dependencies:
+  command-line-args: 4.0.7
+  command-line-usage: 4.0.2
+devDependencies:
+  '@types/command-line-args': 4.0.2
+  '@types/node': 8.5.2
+packages:
+  /@types/command-line-args/4.0.2:
+    dev: true
+    resolution:
+      integrity: sha512-lLN/Rtud+SONdclROGc8CnZeZ/ujQ69U4otFMtoCfCdLfs2x2R2lJFSy583uI9dnnsd6I9Pdy/Mw3efqxO/2bg==
+  /@types/node/8.5.2:
+    dev: true
+    resolution:
+      integrity: sha512-KA4GKOpgXnrqEH2eCVhiv2CsxgXGQJgV1X0vsGlh+WCnxbeAE1GT44ZsTU1IN5dEeV/gDupKa7gWo08V5IxWVQ==
+  /ansi-escape-sequences/4.0.0:
+    dependencies:
+      array-back: 2.0.0
+    dev: false
+    engines:
+      node: '>=4.0.0'
+    resolution:
+      integrity: sha512-v+0wW9Wezwsyb0uF4aBVCjmSqit3Ru7PZFziGF0o2KwTvN2zWfTi3BRLq9EkJFdg3eBbyERXGTntVpBxH1J68Q==
+  /array-back/1.0.4:
+    dependencies:
+      typical: 2.6.1
+    dev: false
+    engines:
+      node: '>=0.12.0'
+    resolution:
+      integrity: sha1-ZEun8JX3/898Q7Xw3DnTwfA8Bjs=
+  /array-back/2.0.0:
+    dependencies:
+      typical: 2.6.1
+    dev: false
+    engines:
+      node: '>=4'
+    resolution:
+      integrity: sha512-eJv4pLLufP3g5kcZry0j6WXpIbzYw9GUB4mVJZno9wfwiBxbizTnHCw3VJb07cBihbFX48Y7oSrW9y+gt4glyw==
+  /command-line-args/4.0.7:
+    dependencies:
+      array-back: 2.0.0
+      find-replace: 1.0.3
+      typical: 2.6.1
+    dev: false
+    resolution:
+      integrity: sha512-aUdPvQRAyBvQd2n7jXcsMDz68ckBJELXNzBybCHOibUWEg0mWTnaYCSRU8h9R+aNRSvDihJtssSRCiDRpLaezA==
+  /command-line-usage/4.0.2:
+    dependencies:
+      ansi-escape-sequences: 4.0.0
+      array-back: 2.0.0
+      table-layout: 0.4.2
+      typical: 2.6.1
+    dev: false
+    engines:
+      node: '>=4.0.0'
+    resolution:
+      integrity: sha512-PpgwSX9SSZZDSTMXmVttJ9w8szzBgMma0bsVpiRfdXljLOBSmJvvxNTAP7twHIsnd6i6jEbcX/JpmAMC+FCbSQ==
+  /deep-extend/0.5.0:
+    dev: false
+    engines:
+      iojs: '>=1.0.0'
+      node: '>=0.10.0'
+    resolution:
+      integrity: sha1-bvSgmwX5iw41jW2T1Mo8rsZnKAM=
+  /find-replace/1.0.3:
+    dependencies:
+      array-back: 1.0.4
+      test-value: 2.1.0
+    dev: false
+    engines:
+      node: '>=4.0.0'
+    resolution:
+      integrity: sha1-uI5zZNLZyVlVnziMZmcNYTBEH6A=
+  /lodash.padend/4.6.1:
+    dev: false
+    resolution:
+      integrity: sha1-U8y6BH0G4VjTEfRdpiX05J5vFm4=
+  /reduce-flatten/1.0.1:
+    dev: false
+    engines:
+      node: '>=0.10.0'
+    resolution:
+      integrity: sha1-JYx479FT3fk8tWEjf2EYTzaW4yc=
+  /table-layout/0.4.2:
+    dependencies:
+      array-back: 2.0.0
+      deep-extend: 0.5.0
+      lodash.padend: 4.6.1
+      typical: 2.6.1
+      wordwrapjs: 3.0.0
+    dev: false
+    engines:
+      node: '>=4.0.0'
+    resolution:
+      integrity: sha512-tygyl5+eSHj4chpq5Zfy6cpc7MOUBClAW9ozghFH7hg9bAUzShOYn+/vUzTRkKOSLJWKfgYtP2tAU2c0oAD8eg==
+  /test-value/2.1.0:
+    dependencies:
+      array-back: 1.0.4
+      typical: 2.6.1
+    dev: false
+    engines:
+      node: '>=0.10.0'
+    resolution:
+      integrity: sha1-Edpv9nDzRxpztiXKTz/c97t0gpE=
+  /typical/2.6.1:
+    dev: false
+    resolution:
+      integrity: sha1-XAgOXWYcu+OCWdLnCjxyU+hziB0=
+  /wordwrapjs/3.0.0:
+    dependencies:
+      reduce-flatten: 1.0.1
+      typical: 2.6.1
+    dev: false
+    engines:
+      node: '>=4.0.0'
+    resolution:
+      integrity: sha512-mO8XtqyPvykVCsrwj5MlOVWvSnCdT+C+QVbm6blradR7JExAhbkZ7hZ9A+9NUtwzSqrlUo9a67ws0EiILrvRpw==
+registry: 'https://registry.npmjs.org/'
+shrinkwrapMinorVersion: 4
+shrinkwrapVersion: 3
+specifiers:
+  '@types/command-line-args': ^4.0.2
+  '@types/node': ^8.5.2
+  command-line-args: ^4.0.7
+  command-line-usage: ^4.0.2

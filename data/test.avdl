@@ -1,0 +1,21 @@
+@namespace("avro.examples.company")
+protocol Baseball {
+  enum ResponseType {
+    Shelter,
+    Evacuate,
+    Prepare,
+    Execute,
+    Avoid,
+    Monitor,
+    Assess,
+    AllClear,
+    None
+  }
+
+  record Employee {
+    string name;
+    boolean active = true;
+    long salary;
+    union { null, ResponseType } response;
+  }
+}

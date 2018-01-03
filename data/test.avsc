@@ -1,0 +1,21 @@
+{
+  "name": "info",
+  "type": "record",
+  "fields": [{
+      "name": "language",
+      "default": "en-US",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    {
+      "name": "category",
+      "type": ["null", {
+        "type": "enum",
+        "name": "Suit",
+        "symbols": ["SPADES", "HEARTS", "DIAMONDS", "CLUBS"]
+      }]
+    }
+  ]
+}
