@@ -2,29 +2,46 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var fs = require("fs");
 var path = require("path");
+var avro = require("avsc");
 var utils_1 = require("./utils");
 var Parser = (function () {
     function Parser(options) {
         this.schemas = {};
         this.definedSchemas = [];
+        var schemaName = options.schema;
         this.loadSchemas(options.folder);
-        this.flattenSchema(options.schema);
+        var flattened = this.flattenSchema(schemaName);
+        try {
+            var canonical = avro.Type.forSchema(flattened).schema();
+        }
+        catch (err) {
+            console.error("Couldn't create canonical representation of schema: " + err + ".");
+        }
+        fs.writeFileSync(path.resolve(schemaName + '.avsc'), JSON.stringify(flattened, null, 2), 'utf8');
     }
     Parser.prototype.flattenSchema = function (schemaName) {
+        var _this = this;
         if (!this.schemas.hasOwnProperty(schemaName)) {
             throw ReferenceError("Schema name '" + schemaName + "' is not found! Did you perhaps forget to include the namespace?");
         }
         var schema = this.schemas[schemaName];
-        var newSchema;
+        var newSchema = {};
+        if (schema.type instanceof Array) {
+            schema.type = schema.type.map(function (t) { return _this.flattenSchema(t); });
+            return schema;
+        }
         switch (schema.type) {
             case 'record':
                 newSchema = this.flattenAvroRecord(schema);
                 break;
             default:
-                throw ReferenceError("Cannot flatten " + schema.type + "!");
+                if (!this.schemas.hasOwnProperty(schema.type)) {
+                    throw ReferenceError("Cannot flatten " + schema.type + "!");
+                }
+                newSchema = this.flattenSchema(schema.type);
         }
         newSchema.name = schemaName;
-        fs.writeFileSync(path.resolve(schemaName + '.avsc'), JSON.stringify(newSchema, null, 2), 'utf8');
+        return newSchema;
     };
     Parser.prototype.flattenAvroSchema = function (schema) {
         switch (schema.type) {
@@ -33,15 +50,14 @@ var Parser = (function () {
             case 'array':
                 return this.flattenAvroArray(schema);
             case 'map':
-                console.warn("Warning: schema " + schema.name + " type of map has not been tested.");
-                return schema;
+                return this.flattenAvroMap(schema);
             case 'fixed':
-                console.warn("Warning: schema " + schema.name + " type of map has not been tested.");
+                console.warn("Warning: schema " + schema.name + " type of fixed has not been tested.");
                 return schema;
             case 'enum':
                 return schema;
             default:
-                return schema;
+                return schema.type;
         }
     };
     ;
@@ -69,6 +85,12 @@ var Parser = (function () {
         var _this = this;
         var flattenedFields = schema.fields.map(function (f) {
             f.type = _this.transpileAvroType(f.type);
+            switch (f.type) {
+                default: break;
+                case 'map':
+                    _this.flattenAvroMap(f);
+                    break;
+            }
             return f;
         });
         if (!flattenedFields) {
@@ -80,6 +102,12 @@ var Parser = (function () {
     Parser.prototype.flattenAvroArray = function (schema) {
         var schemaType = schema.items;
         schema.items = this.transpileAvroType(schemaType);
+        return schema;
+    };
+    ;
+    Parser.prototype.flattenAvroMap = function (schema) {
+        var schemaType = schema.values;
+        schema.values = this.transpileAvroType(schemaType);
         return schema;
     };
     ;

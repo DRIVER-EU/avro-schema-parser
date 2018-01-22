@@ -10,9 +10,9 @@
       "name": "Launch Program",
       "program": "${workspaceFolder}\\src\\cli.ts",
       "args": [
-        "driver.eu.alert",
+        "eu.driver.model.geojson.GeoJSON",
         "-f",
-        "./data/cap.avsc"
+        "./data/geojson.avsc"
       ],
       "outFiles": [
         "${workspaceFolder}/**/*.js"

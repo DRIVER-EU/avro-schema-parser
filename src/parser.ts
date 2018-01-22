@@ -1,7 +1,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import * as avro from 'avsc';
 import { ICommandOptions } from './cli';
-import { IAvroSchema, IAvroRecord, IAvroField, AvroSchemaType, IAvroArray } from './avro/avro-schema';
+import { IAvroSchema, IAvroField, AvroSchemaType, IAvroArray, IAvroMap, IAvroRecord } from './avro/avro-schema';
 import { findAVSCFilesInFolder, isPrimitiveAvroType, isComplexAvroType, clone } from './utils';
 
 /**
@@ -13,8 +14,15 @@ export class Parser {
   private definedSchemas: string[] = [];
 
   constructor(options: ICommandOptions) {
+    const schemaName = options.schema;
     this.loadSchemas(options.folder);
-    this.flattenSchema(options.schema);
+    const flattened = this.flattenSchema(schemaName);
+    try {
+      const canonical = avro.Type.forSchema(flattened).schema();
+    } catch (err) {
+      console.error(`Couldn't create canonical representation of schema: ${err}.`);
+    }
+    fs.writeFileSync(path.resolve(schemaName + '.avsc'), JSON.stringify(flattened, null, 2), 'utf8');
   }
 
   /**
@@ -24,16 +32,23 @@ export class Parser {
   private flattenSchema(schemaName: string) {
     if (!this.schemas.hasOwnProperty(schemaName)) { throw ReferenceError(`Schema name '${schemaName}' is not found! Did you perhaps forget to include the namespace?`); }
     const schema = this.schemas[schemaName];
-    let newSchema: IAvroSchema;
+    let newSchema = {} as IAvroSchema;
+    if (schema.type instanceof Array) {
+      schema.type = schema.type.map(t => this.flattenSchema(t) as any);
+      return schema;
+    }
     switch (schema.type) {
       case 'record':
         newSchema = this.flattenAvroRecord(schema as IAvroRecord);
         break;
       default:
-        throw ReferenceError(`Cannot flatten ${schema.type}!`);
+        if (!this.schemas.hasOwnProperty(schema.type)) {
+          throw ReferenceError(`Cannot flatten ${schema.type}!`);
+        }
+        newSchema = this.flattenSchema(schema.type);
     }
     newSchema.name = schemaName;
-    fs.writeFileSync(path.resolve(schemaName + '.avsc'), JSON.stringify(newSchema, null, 2), 'utf8');
+    return newSchema;
   }
 
   private flattenAvroSchema(schema: IAvroSchema) {
@@ -43,16 +58,14 @@ export class Parser {
       case 'array':
         return this.flattenAvroArray(schema as IAvroArray);
       case 'map':
-        console.warn(`Warning: schema ${schema.name} type of map has not been tested.`);
-        return schema;
+        return this.flattenAvroMap(schema as IAvroMap);
       case 'fixed':
-        console.warn(`Warning: schema ${schema.name} type of map has not been tested.`);
+        console.warn(`Warning: schema ${schema.name} type of fixed has not been tested.`);
         return schema;
       case 'enum':
         return schema;
       default:
-        return schema;
-      // throw ReferenceError(`Cannot flatten ${schema.type}!`);
+        return schema.type;
     }
   };
 
@@ -82,6 +95,12 @@ export class Parser {
   private flattenAvroRecord(schema: IAvroRecord) {
     const flattenedFields = schema.fields.map(f => {
       f.type = this.transpileAvroType(f.type);
+      switch (f.type) {
+        default: break;
+        case 'map':
+          this.flattenAvroMap(f as IAvroMap);
+          break;
+      }
       return f;
     });
     if (!flattenedFields) { schema.fields = flattenedFields as IAvroField[]; }
@@ -91,6 +110,12 @@ export class Parser {
   private flattenAvroArray(schema: IAvroArray) {
     const schemaType = schema.items;
     schema.items = this.transpileAvroType(schemaType) as IAvroSchema;
+    return schema;
+  };
+
+  private flattenAvroMap(schema: IAvroMap) {
+    const schemaType = schema.values;
+    schema.values = this.transpileAvroType(schemaType) as IAvroSchema;
     return schema;
   };
 
@@ -119,6 +144,7 @@ export class Parser {
     } else {
       if (!schema.name) { throw SyntaxError('Schema name is undefined: ' + JSON.stringify(schema, null, 2)); }
       const name = schema.namespace ? `${schema.namespace}.${schema.name}` : schema.name;
+      // delete schema.namespace; // Delete the namespace, as it is redundant after flattening
       this.schemas[name] = schema;
     }
   }

@@ -9,6 +9,7 @@ export declare class Parser {
     private transpileAvroType(schemaType);
     private flattenAvroRecord(schema);
     private flattenAvroArray(schema);
+    private flattenAvroMap(schema);
     private loadSchemas(folder);
     private storeSchema(schema);
 }

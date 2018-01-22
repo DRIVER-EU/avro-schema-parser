@@ -7,7 +7,7 @@ export interface IAvroSchema {
     name: string;
     namespace?: string;
     aliases?: string[];
-    type: AvroType;
+    type: AvroType | AvroType[];
     doc?: string;
 }
 export interface IAvroRecord extends IAvroSchema {
@@ -24,7 +24,7 @@ export interface IAvroArray extends IAvroSchema {
 }
 export interface IAvroMap extends IAvroSchema {
     type: 'map';
-    values: AvroType;
+    values: AvroType | IAvroSchema;
 }
 export interface IAvroField {
     name: string;

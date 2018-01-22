@@ -14,7 +14,7 @@ export interface IAvroSchema {
   namespace?: string;
   /** Slternate names for this record */
   aliases?: string[];
-  type: AvroType;
+  type: AvroType | AvroType[];
   /** Documentation to the user of this schema */
   doc?: string;
 }
@@ -36,7 +36,7 @@ export interface IAvroArray extends IAvroSchema {
 
 export interface IAvroMap extends IAvroSchema {
   type: 'map';
-  values: AvroType;
+  values: AvroType | IAvroSchema;
 }
 
 export interface IAvroField {
