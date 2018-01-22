@@ -1,6 +1,6 @@
 {
   "name": "avro-schema-parser",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Flatten AVRO schema's which reference other schema's, so the Kafka schema registry will accept them.",
   "main": "./dist/lib/index.js",
   "typings": "./dist/lib/index.d.ts",
